@@ -13,9 +13,9 @@
 	<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	<org.spring.version>4.0.1.RELEASE</org.spring.version>
 	<struts2.version>2.3.16.3</struts2.version>
-	<jdk.version>1.6.0</jdk.version>
+	<jdk.version>1.7.0</jdk.version>
 	<shiro.version>1.2.3</shiro.version>
-	<jdk.home>C:\Program Files (x86)\Java\jdk1.6.0_45</jdk.home>
+	<jdk.home>C:\Program Files (x86)\Java\jdk1.7.0_67</jdk.home>
 	<jackson.version>1.9.13</jackson.version>
 	<log4j.version>1.2.16</log4j.version>
 	<slf4j.version>1.7.5</slf4j.version>
@@ -82,6 +82,72 @@
 			<groupId>com.obal</groupId>
 			<artifactId>obal-core</artifactId>
 			<version>0.1</version>
+			            <exclusions>
+                <exclusion>
+                    <groupId>org.mortbay.jetty</groupId>
+                    <artifactId>servlet-api</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.mortbay.jetty</groupId>
+                    <artifactId>jetty</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.mortbay.jetty</groupId>
+                    <artifactId>jetty-util</artifactId>
+                    <!-- <version>1.4</version> -->
+                </exclusion>
+                <exclusion>
+                    <groupId>org.mortbay.jetty</groupId>
+                    <artifactId>jsp-2.1</artifactId>
+                    <!-- <version>6.1.14</version> -->
+                </exclusion>
+                <exclusion>
+                    <groupId>org.apache.thrift</groupId>
+                    <artifactId>thrift</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>com.google.guava</groupId>
+                    <artifactId>guava</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.jruby</groupId>
+                    <artifactId>jruby-complete</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.mortbay.jetty</groupId>
+                    <artifactId>jsp-api-2.1</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.mortbay.jetty</groupId>
+                    <artifactId>servlet-api-2.5</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.apache.hadoop</groupId>
+                    <artifactId>avro</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.mortbay.jetty</groupId>
+                    <artifactId>jsp-2.1</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>tomcat</groupId>
+                    <artifactId>jasper-compiler</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>tomcat</groupId>
+                    <artifactId>jasper-runtime</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>com.google.protobuf</groupId>
+                    <artifactId>protobuf-java</artifactId>
+                </exclusion>
+
+                <exclusion>
+                    <groupId>javax.servlet</groupId>
+                    <artifactId>servlet-api</artifactId>
+                </exclusion>
+ 
+            </exclusions>
 		</dependency>
 			<!-- Start Shiro -->
 		<dependency>
@@ -107,8 +173,8 @@
     <artifactId>maven-compiler-plugin</artifactId>
     <version>3.0</version>
     <configuration>
-     <source>1.6</source>
-     <target>1.6</target>
+     <source>1.7</source>
+     <target>1.7</target>
     </configuration>
    </plugin>
 </plugins>
