@@ -51,15 +51,15 @@
 	
 	<servlet>  
         <display-name>Scan Reducer Servlet</display-name>  
-        <servlet-name>ScanReducerServlet</servlet-name>  
+        <servlet-name>MapRedResultServlet</servlet-name>  
         <servlet-class>  
-           com.obal.web.hbase.ScanReducerServlet   
+           com.obal.web.hbase.MapRedResultServlet   
         </servlet-class>  
         <load-on-startup>1</load-on-startup>  
     </servlet>    
     <servlet-mapping>  
-        <servlet-name>ScanReducerServlet</servlet-name>  
-        <url-pattern>/scanreducer/*</url-pattern>
+        <servlet-name>MapRedResultServlet</servlet-name>  
+        <url-pattern>/mapredresult/*</url-pattern>
     </servlet-mapping>
     
 	<filter>
