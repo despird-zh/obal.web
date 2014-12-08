@@ -12,5 +12,5 @@
 	<constant name="struts.allowed.action.names" value="[a-zA-Z0-9._!/\-]*"></constant>
 	<constant name="struts.ui.theme" value="simple" />	
 	
-	<constant name="struts.action.excludePattern" value="/mapredresult*"/>
+	<constant name="struts.action.excludePattern" value="/mapredresult/,/mapredresult/.*"/>
 </struts>
