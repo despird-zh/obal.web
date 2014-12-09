@@ -15,8 +15,10 @@ import org.slf4j.LoggerFactory;
 public class MapRedResultServlet extends HttpServlet{
 
 	private static final long serialVersionUID = 1L;
+	
 	static Logger LOGGER = LoggerFactory.getLogger(MapRedResultServlet.class);
-
+	
+	int count = 0;
 	@Override
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
@@ -49,13 +51,16 @@ public class MapRedResultServlet extends HttpServlet{
 	    byte[] buf = new byte[1024];
 	    int len;
 	    while ((len = ins.read(buf)) > 0) {
-	      
+	        
 	    	String str = new String(buf,0,len);
 	    	System.out.print(str);
 	    }
+	    System.out.println();
+	    count++;
 		PrintWriter w = response.getWriter();
-		w.write("demo data xxxx");
+		w.write("__DONE__");
 		response.flushBuffer();
+		System.out.println("this is "+count+"th request");
 		LOGGER.debug(uri.toString());
 	}
 }
