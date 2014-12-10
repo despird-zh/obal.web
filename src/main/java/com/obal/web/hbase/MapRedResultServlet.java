@@ -45,7 +45,8 @@ public class MapRedResultServlet extends HttpServlet{
 
 		String uri = request.getRequestURI();
 		uri = uri.substring(request.getContextPath().length());
-		
+		int i = count++;
+		System.out.println("start receive "+i+" th result.");
 		InputStream ins = request.getInputStream();
 		 // Transfer bytes from in to out
 	    byte[] buf = new byte[1024];
@@ -56,11 +57,11 @@ public class MapRedResultServlet extends HttpServlet{
 	    	System.out.print(str);
 	    }
 	    System.out.println();
-	    count++;
+	    
 		PrintWriter w = response.getWriter();
 		w.write("__DONE__");
 		response.flushBuffer();
-		System.out.println("this is "+count+"th request");
+		System.out.println("end receive "+i+"th result");
 		LOGGER.debug(uri.toString());
 	}
 }

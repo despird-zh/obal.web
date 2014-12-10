@@ -15,7 +15,7 @@
 	<struts2.version>2.3.16.3</struts2.version>
 	<jdk.version>1.7.0</jdk.version>
 	<shiro.version>1.2.3</shiro.version>
-	<jdk.home>C:\Program Files (x86)\Java\jdk1.7.0_71</jdk.home>
+	<jdk.home>C:\Program Files\Java\jdk1.7.0_71</jdk.home>
 	<jackson.version>1.9.13</jackson.version>
 	<log4j.version>1.2.16</log4j.version>
 	<slf4j.version>1.7.5</slf4j.version>
@@ -171,7 +171,6 @@
   <plugins>
    <plugin>
     <artifactId>maven-compiler-plugin</artifactId>
-    <version>3.0</version>
     <configuration>
      <source>1.7</source>
      <target>1.7</target>
