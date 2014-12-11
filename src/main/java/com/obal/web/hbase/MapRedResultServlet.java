@@ -9,9 +9,12 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.hadoop.hbase.KeyValue;
 import org.apache.hadoop.hbase.client.Result;
 import org.apache.hadoop.hbase.mapreduce.ResultSerialization;
+import org.apache.hadoop.io.DataInputBuffer;
+import org.apache.hadoop.io.DataOutputBuffer;
 import org.apache.hadoop.io.serializer.Deserializer;
 import org.apache.hadoop.io.serializer.Serializer;
 import org.slf4j.Logger;
@@ -64,7 +67,11 @@ public class MapRedResultServlet extends HttpServlet{
 //	    	//System.out.print(str);
 //	    }
 //	    System.out.println();
-		deserializer.open(ins);
+		DataOutputBuffer doutbuf = new DataOutputBuffer();
+		IOUtils.copy(ins, doutbuf);
+		DataInputBuffer dinbuf = new DataInputBuffer();
+		dinbuf.reset(doutbuf.getData(),doutbuf.getLength());
+		deserializer.open(dinbuf);
 		Result result = deserializer.deserialize(new Result());
 		for (KeyValue keyValue : result.raw()) {  
             System.out.println("Column:" + new String(keyValue.getFamily())
