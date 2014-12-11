@@ -9,6 +9,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.hadoop.hbase.KeyValue;
+import org.apache.hadoop.hbase.client.Result;
+import org.apache.hadoop.hbase.mapreduce.ResultSerialization;
+import org.apache.hadoop.io.serializer.Deserializer;
+import org.apache.hadoop.io.serializer.Serializer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -43,21 +48,29 @@ public class MapRedResultServlet extends HttpServlet{
 	private void requestDispatch(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 
+		ResultSerialization rstSerialUtil = new ResultSerialization();
+		Deserializer<Result> deserializer = rstSerialUtil.getDeserializer(Result.class);
 		String uri = request.getRequestURI();
 		uri = uri.substring(request.getContextPath().length());
 		int i = count++;
 		System.out.println("start receive "+i+" th result.");
 		InputStream ins = request.getInputStream();
 		 // Transfer bytes from in to out
-	    byte[] buf = new byte[1024];
-	    int len;
-	    while ((len = ins.read(buf)) > 0) {
-	        
-	    	String str = new String(buf,0,len);
-	    	System.out.print(str);
-	    }
-	    System.out.println();
-	    
+//	    byte[] buf = new byte[1024];
+//	    int len;
+//	    while ((len = ins.read(buf)) > 0) {
+//	        
+//	    	String str = new String(buf,0,len);
+//	    	//System.out.print(str);
+//	    }
+//	    System.out.println();
+		deserializer.open(ins);
+		Result result = deserializer.deserialize(new Result());
+		for (KeyValue keyValue : result.raw()) {  
+            System.out.println("Column:" + new String(keyValue.getFamily())
+            		+ "/Qualifier:" + new String(keyValue.getQualifier())       
+            		+ "/Val:" + new String(keyValue.getValue()));
+        }  
 		PrintWriter w = response.getWriter();
 		w.write("__DONE__");
 		response.flushBuffer();
