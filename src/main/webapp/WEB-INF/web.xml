@@ -53,7 +53,7 @@
         <display-name>Scan Reducer Servlet</display-name>  
         <servlet-name>MapRedResultServlet</servlet-name>  
         <servlet-class>  
-           com.obal.web.hbase.MapRedResultServlet   
+           com.obal.web.hbase.MapRedHookerServlet   
         </servlet-class>  
         <load-on-startup>1</load-on-startup>  
     </servlet>    
