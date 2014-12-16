@@ -113,7 +113,7 @@ public class AuthorRealm extends AuthorizingRealm {
 		 * Beside we also reset the docbase.
 		 * */
 	
-		return new AuthenInfo(principal, principal.password(), getName());
+		return new AuthenInfo(principal, principal.getPassword(), getName());
 	}	
 
 }
