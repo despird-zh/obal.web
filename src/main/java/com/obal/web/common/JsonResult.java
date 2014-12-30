@@ -17,16 +17,7 @@ import org.springframework.http.server.ServletServerHttpResponse;
 
 import com.opensymphony.xwork2.ActionInvocation;
 
-/**
- * @author lich
- * @version 1.0
- * 
- * 该类用来对设置的JSon数据执行转化处理
- * 
- * @author gdiao 
- * @version 1.1 2014-2-13
- * Update: 设置Response回写的Content Type
- **/
+
 public class JsonResult extends StreamResult {
 
 	private static final long serialVersionUID = -5625482038953808264L;
@@ -67,11 +58,7 @@ public class JsonResult extends StreamResult {
 					logger.debug("Response is already closed!");
 					return;					
 				}
-				
-				/** mod:add 2014-2-13 gdiao */ 
-//				response.setContentType("application/json");				
-				//文件上传时 contentType需指定该类型
-//				response.setContentType("text/html");				
+		
 				converter.writeInternal(jd, new ServletServerHttpResponse(response));
 			}
 			logger.debug("End Parsing json data..");

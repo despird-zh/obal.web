@@ -4,8 +4,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
+import com.obal.common.MessageFormatter;
 import com.obal.exception.BaseException;
-import com.obal.util.MessageFormatter;
 
 public class WebException extends BaseException{
 

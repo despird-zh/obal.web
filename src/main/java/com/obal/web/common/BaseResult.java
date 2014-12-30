@@ -10,7 +10,7 @@ package com.obal.web.common;
  * Theoretically We suggest every action's result wrapper class should extend this class.
  * 
  * 
- * @author Gary Diao mailto:diaogc@ultrabraod.com.cn 2012-07-01
+ * @author 
  * @version V0.1
  **/
 public class BaseResult {
