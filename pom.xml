@@ -80,7 +80,7 @@
 	<!-- End Json -->
 		<dependency>
 			<groupId>com.obal</groupId>
-			<artifactId>obal-core</artifactId>
+			<artifactId>obal-repo</artifactId>
 			<version>0.1</version>
 			            <exclusions>
                 <exclusion>

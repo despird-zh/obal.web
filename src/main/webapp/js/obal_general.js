@@ -3339,73 +3339,92 @@ function DrawCalendar(){
 function DrawFullCalendar(){
 	LoadCalendarScript(DrawCalendar);
 }
-//////////////////////////////////////////////////////
-//////////////////////////////////////////////////////
-//
-//      MAIN DOCUMENT READY SCRIPT OF DEVOOPS THEME
-//
-//      In this script main logic of theme
-//
-//////////////////////////////////////////////////////
-//////////////////////////////////////////////////////
-$(document).ready(function () {
-	$('body').on('click', '.show-sidebar', function (e) {
-		e.preventDefault();
-		$('div#main').toggleClass('sidebar-show');
-		setTimeout(MessagesMenuWidth, 250);
-	});
-	var ajax_url = location.hash.replace(/^#/, '');
-	if (ajax_url.length < 1) {
-		ajax_url = 'ajax/dashboard.html';
-	}
-	LoadAjaxContent(ajax_url);
-	$('.main-menu').on('click', 'a', function (e) {
-		var parents = $(this).parents('li');
-		var li = $(this).closest('li.dropdown');
-		var another_items = $('.main-menu li').not(parents);
-		another_items.find('a').removeClass('active');
-		another_items.find('a').removeClass('active-parent');
-		if ($(this).hasClass('dropdown-toggle') || $(this).closest('li').find('ul').length == 0) {
-			$(this).addClass('active-parent');
-			var current = $(this).next();
-			if (current.is(':visible')) {
-				li.find("ul.dropdown-menu").slideUp('fast');
-				li.find("ul.dropdown-menu a").removeClass('active')
+//////////////////////////////////////
+// Main frame Wrapper.
+//////////////////////////////////////
+window.MainFrame = (function($) {
+	
+	var _default_page = 'ajax/dashboard.html';
+	var _sidebar_switch = ".show-sidebar";
+	var _$preloader = $('.preloader');
+	var _$content_holder = $('#ajax-content');
+	var _left_mainmenu = ".main-menu";
+	var _main_page = "#main";
+	/////////////////////////////////
+	// load ajax content to page
+	/////////////////////////////////
+	var _loadContent = function(url){
+		_$preloader.show();
+		$.ajax({
+			mimeType: 'text/html; charset=utf-8', // ! Need set mimeType only when run from local file
+			url: url,
+			type: 'GET',
+			success: function(data) {
+				_$content_holder.html(data);
+				_$preloader.hide();
+			},
+			error: function (jqXHR, textStatus, errorThrown) {
+				alert(errorThrown);
+			},
+			dataType: "html",
+			async: false
+		});
+	}; 
+	//////////////////////////////////////////
+	// Bind left main menu event.
+	//////////////////////////////////////////
+	var _bindMainMenu = function(){
+		$(_left_mainmenu).on('click', 'a', function (e) {
+			var parents = $(this).parents('li');
+			var li = $(this).closest('li.dropdown');
+			var another_items = $('.main-menu li').not(parents);
+			another_items.find('a').removeClass('active');
+			another_items.find('a').removeClass('active-parent');
+			if ($(this).hasClass('dropdown-toggle') || $(this).closest('li').find('ul').length == 0) {
+				$(this).addClass('active-parent');
+				var current = $(this).next();
+				if (current.is(':visible')) {
+					li.find("ul.dropdown-menu").slideUp('fast');
+					li.find("ul.dropdown-menu a").removeClass('active')
+				}
+				else {
+					another_items.find("ul.dropdown-menu").slideUp('fast');
+					current.slideDown('fast');
+				}
 			}
 			else {
-				another_items.find("ul.dropdown-menu").slideUp('fast');
-				current.slideDown('fast');
+				if (li.find('a.dropdown-toggle').hasClass('active-parent')) {
+					var pre = $(this).closest('ul.dropdown-menu');
+					pre.find("li.dropdown").not($(this).closest('li')).find('ul.dropdown-menu').slideUp('fast');
+				}
 			}
-		}
-		else {
-			if (li.find('a.dropdown-toggle').hasClass('active-parent')) {
-				var pre = $(this).closest('ul.dropdown-menu');
-				pre.find("li.dropdown").not($(this).closest('li')).find('ul.dropdown-menu').slideUp('fast');
+			if ($(this).hasClass('active') == false) {
+				$(this).parents("ul.dropdown-menu").find('a').removeClass('active');
+				$(this).addClass('active')
 			}
-		}
-		if ($(this).hasClass('active') == false) {
-			$(this).parents("ul.dropdown-menu").find('a').removeClass('active');
-			$(this).addClass('active')
-		}
-		if ($(this).hasClass('ajax-link')) {
-			e.preventDefault();
-			if ($(this).hasClass('add-full')) {
-				$('#content').addClass('full-content');
+			if ($(this).hasClass('ajax-link')) {
+				e.preventDefault();
+				if ($(this).hasClass('add-full')) {
+					$('#content').addClass('full-content');
+				}
+				else {
+					$('#content').removeClass('full-content');
+				}
+				var url = $(this).attr('href');
+				window.location.hash = url;
+				_loadContent(url);
 			}
-			else {
-				$('#content').removeClass('full-content');
+			if ($(this).attr('href') == '#') {
+				e.preventDefault();
 			}
-			var url = $(this).attr('href');
-			window.location.hash = url;
-			LoadAjaxContent(url);
-		}
-		if ($(this).attr('href') == '#') {
-			e.preventDefault();
-		}
-	});
-	var height = window.innerHeight - 49;
-	$('#main').css('min-height', height)
-		.on('click', '.expand-link', function (e) {
+		});
+	};
+	//////////////////////////////////////////////
+	// bind expand close collapse event
+	//////////////////////////////////////////////
+	var _bindExpandCollapseClose = function(){
+	
+		$(_main_page).on('click', '.expand-link', function (e) {
 			var body = $('body');
 			e.preventDefault();
 			var box = $(this).closest('div.box');
@@ -3442,52 +3461,96 @@ $(document).ready(function () {
 			var content = $(this).closest('div.box');
 			content.remove();
 		});
-	$('#locked-screen').on('click', function (e) {
-		e.preventDefault();
-		$('body').addClass('body-screensaver');
-		$('#screensaver').addClass("show");
-		ScreenSaver();
-	});
-	$('body').on('click', 'a.close-link', function(e){
-		e.preventDefault();
-		CloseModalBox();
-	});
-	$('#top-panel').on('click','a', function(e){
-		if ($(this).hasClass('ajax-link')) {
+	};
+	
+	/////////////////////////////////////////////////////
+	// Initial function, the entrance of mainframe.
+	/////////////////////////////////////////////////////
+	var _initial = function(){
+		// bind sidebar switcher event
+		$('body').on('click', '.show-sidebar', function (e) {
 			e.preventDefault();
-			if ($(this).hasClass('add-full')) {
-				$('#content').addClass('full-content');
+			$('div#main').toggleClass('sidebar-show');
+			setTimeout(MessagesMenuWidth, 250);
+		});
+		// load default page.
+		var ajax_url = location.hash.replace(/^#/, '');
+		if (ajax_url.length < 1) {
+			ajax_url = _default_page;
+		}
+		_loadContent(ajax_url);
+		// bind main menu event
+		_bindMainMenu();
+		// set main page height
+		var height = window.innerHeight - 49;
+		$(_main_page).css('min-height', height);
+		// bind div.box event
+		_bindExpandCollapseClose();
+	};
+	
+	return {
+		"initial": _initial,
+		"Preloader" : _$preloader,
+		"LoadContent" : _loadContent
+	};
+})(jQuery);
+
+//////////////////////////////////////////
+// Header Frame module
+//////////////////////////////////////////
+window.HeaderFrame = (function($){
+	
+	var _initial = function(){
+	
+		$('#top-panel').on('click','a', function(e){
+			if ($(this).hasClass('ajax-link')) {
+				e.preventDefault();
+				if ($(this).hasClass('add-full')) {
+					$('#content').addClass('full-content');
+				}
+				else {
+					$('#content').removeClass('full-content');
+				}
+				var url = $(this).attr('href');
+				window.location.hash = url;
+				LoadAjaxContent(url);
 			}
-			else {
+		});
+		$('#search').on('keydown', function(e){
+			if (e.keyCode == 13){
+				e.preventDefault();
 				$('#content').removeClass('full-content');
+				ajax_url = 'ajax/page_search.html';
+				window.location.hash = ajax_url;
+				LoadAjaxContent(ajax_url);
 			}
-			var url = $(this).attr('href');
-			window.location.hash = url;
-			LoadAjaxContent(url);
-		}
-	});
-	$('#search').on('keydown', function(e){
-		if (e.keyCode == 13){
-			e.preventDefault();
-			$('#content').removeClass('full-content');
-			ajax_url = 'ajax/page_search.html';
-			window.location.hash = ajax_url;
-			LoadAjaxContent(ajax_url);
-		}
-	});
-	$('#screen_unlock').on('mouseover', function(){
-		var header = 'Enter current username and password';
-		var form = $('<div class="form-group"><label class="control-label">Username</label><input type="text" class="form-control" name="username" /></div>'+
-					'<div class="form-group"><label class="control-label">Password</label><input type="password" class="form-control" name="password" /></div>');
-		var button = $('<div class="text-center"><a href="index.html" class="btn btn-primary">Unlock</a></div>');
-		OpenModalBox(header, form, button);
-	});
-	$('.about').on('click', function(){
-		$('#about').toggleClass('about-h');
-	})
-	$('#about').on('mouseleave', function(){
-		$('#about').removeClass('about-h');
-	})
+		});
+
+		$('.about').on('click', function(){
+			$('#about').toggleClass('about-h');
+		})
+		$('#about').on('mouseleave', function(){
+			$('#about').removeClass('about-h');
+		})
+	}
+	
+	return {
+		"initial":_initial
+	};
+})(jQuery);
+//////////////////////////////////////////////////////
+//////////////////////////////////////////////////////
+//
+//      MAIN DOCUMENT READY SCRIPT OF DEVOOPS THEME
+//
+//      In this script main logic of theme
+//
+//////////////////////////////////////////////////////
+//////////////////////////////////////////////////////
+$(document).ready(function () {
+
+	MainFrame.initial();
+	HeaderFrame.initial();
 });
 
 

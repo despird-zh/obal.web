@@ -26,25 +26,11 @@
 	<div class="clearfix visible-xs"></div>
 	<div class="col-xs-12 col-sm-8 col-md-7 pull-right">
 		<div class="row">
-			<div class="col-xs-4">
+			<div class="col-xs-12">
 				<div class="sparkline-dashboard" id="sparkline-1"></div>
 				<div class="sparkline-dashboard-info">
 					<i class="fa fa-usd"></i>756.45M
 					<span class="txt-primary">EBITDA</span>
-				</div>
-			</div>
-			<div class="col-xs-4">
-				<div class="sparkline-dashboard" id="sparkline-2"></div>
-				<div class="sparkline-dashboard-info">
-					<i class="fa fa-usd"></i>245.12M
-					<span class="txt-info">OIBDA</span>
-				</div>
-			</div>
-			<div class="col-xs-4">
-				<div class="sparkline-dashboard" id="sparkline-3"></div>
-				<div class="sparkline-dashboard-info">
-					<i class="fa fa-usd"></i>107.83M
-					<span>REVENUE</span>
 				</div>
 			</div>
 		</div>
@@ -512,9 +498,34 @@
 var sparkline_arr_1 = SparklineTestData();
 var sparkline_arr_2 = SparklineTestData();
 var sparkline_arr_3 = SparklineTestData();
+window.DashBoardPage = (function($){
+
+	var _bind_tabs = function(){
+		$('#content').on('click', 'a.tab-link', function(e){
+			e.preventDefault();
+			$('div#dashboard_tabs').find('div[id^=dashboard]').each(function(){
+				$(this).css('visibility', 'hidden').css('position', 'absolute');
+			});
+			var attr = $(this).attr('id');
+			$('#'+'dashboard-'+attr).css('visibility', 'visible').css('position', 'relative');
+			$(this).closest('.nav').find('li').removeClass('active');
+			$(this).closest('li').addClass('active');
+		});
+	};
+	
+	var _initial = function(){
+		_bind_tabs();
+	}
+	return {
+		
+		"initial" : _initial
+		
+	};
+})(jQuery);
+
 $(document).ready(function() {
 	// Make all JS-activity for dashboard
-	DashboardTabChecker();
+	DashBoardPage.initial();
 	// Load Knob plugin and run callback for draw Knob charts for dashboard(tab-servers)
 	LoadKnobScripts(DrawKnobDashboard);
 	// Load Sparkline plugin and run callback for draw Sparkline charts for dashboard(top of dashboard + plot in tables)
