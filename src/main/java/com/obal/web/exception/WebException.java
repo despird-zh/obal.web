@@ -4,7 +4,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
-import com.obal.common.MessageFormatter;
+import org.slf4j.helpers.MessageFormatter;
+
 import com.obal.exception.BaseException;
 
 public class WebException extends BaseException{
@@ -50,7 +51,7 @@ public class WebException extends BaseException{
 		if(errorcode.equals(messagePattern)){
 			return super.findMessage(errorcode, param);
 		}
-		return MessageFormatter.arrayFormat(messagePattern, param);
+		return MessageFormatter.arrayFormat(messagePattern, param).getMessage();
 	}
 
 }
