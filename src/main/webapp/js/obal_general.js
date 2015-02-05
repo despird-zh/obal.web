@@ -3374,6 +3374,7 @@ window.MainFrame = (function($) {
 	// Bind left main menu event.
 	//////////////////////////////////////////
 	var _bindMainMenu = function(){
+		
 		$(_left_mainmenu).on('click', 'a', function (e) {
 			var parents = $(this).parents('li');
 			var li = $(this).closest('li.dropdown');
@@ -3385,11 +3386,14 @@ window.MainFrame = (function($) {
 				var current = $(this).next();
 				if (current.is(':visible')) {
 					li.find("ul.dropdown-menu").slideUp('fast');
-					li.find("ul.dropdown-menu a").removeClass('active')
+					li.find("ul.dropdown-menu a").removeClass('active');
+					$(this).find('i.fa-angle-down').removeClass('fa-angle-down').addClass('fa-angle-left');//--
 				}
 				else {
 					another_items.find("ul.dropdown-menu").slideUp('fast');
 					current.slideDown('fast');
+					$(this).find('i.fa-angle-left').removeClass('fa-angle-left').addClass('fa-angle-down');//--
+					another_items.find("a.dropdown-toggle > i.fa-angle-down").removeClass('fa-angle-down').addClass('fa-angle-left');//--
 				}
 			}
 			else {
@@ -3402,6 +3406,7 @@ window.MainFrame = (function($) {
 				$(this).parents("ul.dropdown-menu").find('a').removeClass('active');
 				$(this).addClass('active')
 			}
+
 			if ($(this).hasClass('ajax-link')) {
 				e.preventDefault();
 				if ($(this).hasClass('add-full')) {
